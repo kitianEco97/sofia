@@ -12,7 +12,6 @@ const dbConnection = async() => {
 
         console.log('DB Online');
         
-
     } catch (error) {
         console.log('DB ERROR', error);
         throw new Error('Error en la base de datos - Hable con el admin');

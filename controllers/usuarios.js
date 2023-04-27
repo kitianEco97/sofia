@@ -18,6 +18,21 @@ const getUsuarios = async (req, res = response) => {
     })
 }
 
+const findByDriver = async(req, res =response) => {
+    try {
+        const data = await Usuario.find({role: 'driver'});
+        console.log('DRIVERS ->', data);
+        return res.status(201).json(data);
+    } catch (error) {
+        return res.status(501).json({
+            success: false,
+            message: 'error al obtener el driver'
+        });
+    }
+}
+
+
 module.exports = {
-    getUsuarios
+    getUsuarios,
+    findByDriver,    
 }

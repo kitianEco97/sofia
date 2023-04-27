@@ -19,7 +19,12 @@ const UsuarioSchema = Schema({
         type: Boolean,
         default: false
     },
-
+    role: {
+        type: String
+    },
+    trip: {
+        type: String
+    }
 });
 
 UsuarioSchema.method('toJSON', function() {

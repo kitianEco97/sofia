@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const path = require('path');
 require('dotenv').config();
 
@@ -6,8 +7,6 @@ require('dotenv').config();
 require('./database/config').dbConnection();
 
 
-// App de Express
-const app = express();
 
 // Lectura y parseo del Body
 app.use( express.json() );
@@ -15,10 +14,14 @@ app.use( express.json() );
 
 // Node Server
 const server = require('http').createServer(app);
-module.exports.io = require('socket.io')(server);
-require('./sockets/socket');
+const io = require('socket.io')(server);
+// require('./sockets/socket');
 
 
+/*
+* Sockets
+*/
+const tripDriverSocket = require('./sockets/trip_driver');
 
 
 // Path público
@@ -30,9 +33,10 @@ app.use( express.static( publicPath ) );
 // Mis Rutas
 app.use( '/api/login', require('./routes/auth') );
 app.use( '/api/usuarios', require('./routes/usuarios') );
-app.use( '/api/mensajes', require('./routes/mensajes') );
+app.use( '/api/trip', require('./routes/trip') );
 
-
+// LLAMAR A LOS SOCKETS
+tripDriverSocket(io);
 
 server.listen( process.env.PORT, ( err ) => {
 
