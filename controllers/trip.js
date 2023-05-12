@@ -12,7 +12,6 @@ const crearTrip = async (req, res = response ) => {
         trip.status = 'Estacionado';
 
         const data = await Trip.create(trip);
-        console.log(data.status);
         res.status(201).json({            
             message: 'el viaje se creo correctamente',
             success: true, 
@@ -44,12 +43,11 @@ const getTripsByStatus = async (req, res = response) => {
     try {
         const status = req.params.status;      
         const data = await Trip.find({status});
-        console.log(data);
         return res.status(201).json(data);
     } catch (error) {
         res.status(501).json({
             ok: false,
-            msg: 'hable con el administrador - tripController - getTrips'
+            msg: 'hable con el administrador - tripController - getTripsByStatus'
         });
     }
 }
@@ -75,7 +73,6 @@ const getTrip = async (req, res = response) => {
 
 const updateTripToDispatched = async (req, res = response ) => {
     const driverUid = req.headers.uid;
-    console.log('updateTripToDispatched ->', req.body);
     try {
         let trip = req.body;
         const data = await Trip.findByIdAndUpdate(trip.uid,{ status: 'EnCamino', online: true, idDriver: driverUid });
@@ -125,16 +122,11 @@ const findDriverAndStatus = async (req, res = response) => {
     try {
         const {id} = req.params;
         const usr = await Usuario.findById({_id: id});
-        console.log('usr.trip ->', usr);
-        if(!usr.trip || usr.trip == '') {            
-            return res.status(201).json([]);
-        }
-        console.log('usr.trip != null');
+       
         const trip = await Trip.find({_id: usr.trip});
         return res.status(201).json(trip);    
         
     } catch (error) {
-        console.log(error);
         res.status(501).json({
             ok: false,
             msg: 'hable con el administrador - tripController - findDriverAndStatus'
@@ -142,12 +134,10 @@ const findDriverAndStatus = async (req, res = response) => {
     }
 }
 
-const updateLatLng = async (req, res = response ) => {
-    const driverUid = req.headers.uid;
-    
+const updateLatLng = async (req, res = response ) => {        
     try {
         let trip = req.body;
-        const data = await Trip.findByIdAndUpdate(trip.uid,{ lat: trip. lat, lng: trip. lng });
+        const data = await Trip.findByIdAndUpdate(trip.uid,{ lat: trip.lat, lng: trip.lng });
         
         await Usuario.findByIdAndUpdate(driverUid, {trip: ''});        
         

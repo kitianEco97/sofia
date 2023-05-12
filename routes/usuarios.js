@@ -9,7 +9,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
-router.get('/', validarJWT, getUsuarios);
+router.get('/', getUsuarios);
 router.get('/findByDriver', findByDriver);
 
 

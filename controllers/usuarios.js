@@ -10,7 +10,6 @@ const getUsuarios = async (req, res = response) => {
     .sort('-online')
     .skip(desde);
     
-    console.log(usuarios);
     
     res.json({
         ok: true,
@@ -21,7 +20,6 @@ const getUsuarios = async (req, res = response) => {
 const findByDriver = async(req, res =response) => {
     try {
         const data = await Usuario.find({role: 'driver'});
-        console.log('DRIVERS ->', data);
         return res.status(201).json(data);
     } catch (error) {
         return res.status(501).json({

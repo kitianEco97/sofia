@@ -20,7 +20,8 @@ const UsuarioSchema = Schema({
         default: false
     },
     role: {
-        type: String
+        type: String,
+        default: 'user'
     },
     trip: {
         type: String

@@ -11,17 +11,12 @@ require('./database/config').dbConnection();
 // Lectura y parseo del Body
 app.use( express.json() );
 
-
-// Node Server
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-// require('./sockets/socket');
-
-
 /*
 * Sockets
 */
-const tripDriverSocket = require('./sockets/trip_driver');
+const server = require('http').createServer(app);
+module.exports.io = require('socket.io')(server);
+require('./sockets/socket');
 
 
 // Path público
@@ -36,9 +31,9 @@ app.use( '/api/usuarios', require('./routes/usuarios') );
 app.use( '/api/trip', require('./routes/trip') );
 
 // LLAMAR A LOS SOCKETS
-tripDriverSocket(io);
+// tripDriverSocket(io);
 
-server.listen( process.env.PORT, ( err ) => {
+server.listen( process.env.PORT || 3000, ( err ) => {
 
     if ( err ) throw new Error(err);
 
